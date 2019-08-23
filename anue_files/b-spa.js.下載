@@ -1,0 +1,12 @@
+  var _paq = _paq || [];
+  _paq.push(['setCookieDomain', '*.cnyes.com']);
+  _paq.push(["setDomains", ["*.cnyes.com","*.blog.cnyes.com","*.cdn.cnyes.com","*.fundsyes.com"]]);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//analytics.prod.jpp.cnyes.cool/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var a="//b.cnyes.cool/";
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=a+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();

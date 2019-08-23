@@ -1,0 +1,91 @@
+/* eslint-disable */
+/*
+ * clone from is.js 0.9.0: https://github.com/arasatasaygin/is.js
+ * Author: Aras Atasaygin
+ */
+var comparator = {
+  '<': function(a, b) {
+    return a < b;
+  },
+  '<=': function(a, b) {
+    return a <= b;
+  },
+  '>': function(a, b) {
+    return a > b;
+  },
+  '>=': function(a, b) {
+    return a >= b;
+  }
+};
+
+function compareVersion(version, range) {
+  var string = range + '';
+  var n = +(string.match(/\d+/) || NaN);
+  var op = string.match(/^[<>]=?|/)[0];
+
+  return comparator[op] ? comparator[op](version, n) : version == n || n !== n;
+}
+
+function isOpera(userAgent, range) {
+  var match = userAgent.match(/(?:^opera.+?version|opr)\/(\d+)/);
+
+  return match !== null && compareVersion(match[1], range);
+}
+
+function isChrome(userAgent, range) {
+  var match = userAgent.match(/(?:chrome|crios)\/(\d+)/);
+
+  return match !== null && !isOpera(userAgent) && compareVersion(match[1], range);
+}
+
+function isEdge(userAgent, range) {
+  var match = userAgent.match(/edge\/(\d+)/);
+
+  return match !== null && compareVersion(match[1], range);
+}
+
+function isIe(userAgent, range) {
+  var match = userAgent.match(/(?:msie |trident.+?; rv:)(\d+)/);
+
+  return match !== null && compareVersion(match[1], range);
+}
+
+function isFirefox(userAgent, range) {
+  var match = userAgent.match(/(?:firefox|fxios)\/(\d+)/);
+
+  return match !== null && compareVersion(match[1], range);
+}
+
+function isSafari(userAgent, range) {
+  var match = userAgent.match(/version\/(\d+).+?safari/);
+
+  return match !== null && compareVersion(match[1], range);
+}
+
+function isMobileOrTable(userAgent) {
+  return /android/.test(userAgent) || /(ipad|iphone|ipod)/.test(userAgent);
+}
+
+function redirect(location) {
+  document.location = location;
+}
+
+function checkBrowser() {
+  var userAgent = window && window.navigator && window.navigator.userAgent && window.navigator.userAgent.toLowerCase();
+
+  if (userAgent && !isMobileOrTable(userAgent)) {
+    if (isIe(userAgent, '<10')) {
+      redirect('/unsupport#ie');
+    } else if (isEdge(userAgent, '<16')) {
+      redirect('/unsupport#edge');
+    } else if (isChrome(userAgent, '<49')) {
+      redirect('/unsupport#chrome');
+    } else if (isFirefox(userAgent, '<52')) {
+      redirect('/unsupport#firefox');
+    } else if (isSafari(userAgent, '<9')) {
+      redirect('/unsupport#safari');
+    }
+  }
+}
+
+checkBrowser();
